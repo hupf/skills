@@ -7,8 +7,8 @@
 ## Install
 
 ```
-/plugin marketplace add <github-user>/skills
-/plugin install node-deps@mhofer-skills
+/plugin marketplace add hupf/skills
+/plugin install node-deps@hupf-skills
 ```
 
 Run it with `/node-deps:update-node-dependencies [package dir]`, or ask Claude to update the dependencies.

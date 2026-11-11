@@ -1,9 +1,9 @@
 {
-  "name": "mhofer-skills",
+  "name": "hupf-skills",
   "owner": {
     "name": "Mathis Hofer"
   },
-  "description": "Claude Code skills by Mathis Hofer",
+  "description": "Claude Code skills by hupf",
   "plugins": [
     {
       "name": "node-deps",
