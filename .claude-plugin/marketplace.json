@@ -1,0 +1,14 @@
+{
+  "name": "mhofer-skills",
+  "owner": {
+    "name": "Mathis Hofer"
+  },
+  "description": "Claude Code skills by Mathis Hofer",
+  "plugins": [
+    {
+      "name": "node-deps",
+      "source": "./",
+      "description": "Update the Node.js dependencies (npm, pnpm or yarn) of a project, from security fixes to user-decided major upgrades"
+    }
+  ]
+}

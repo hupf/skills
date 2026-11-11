@@ -1,0 +1,8 @@
+{
+  "name": "node-deps",
+  "description": "Update the Node.js dependencies (npm, pnpm or yarn) of a project, from security fixes to user-decided major upgrades",
+  "version": "1.0.0",
+  "author": {
+    "name": "Mathis Hofer"
+  }
+}
