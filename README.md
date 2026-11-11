@@ -12,3 +12,7 @@
 ```
 
 Run it with `/node-deps:update-node-dependencies [package dir]`, or ask Claude to update the dependencies.
+
+## License
+
+Apache License 2.0, see [LICENSE](LICENSE).

@@ -1,6 +1,7 @@
 ---
 name: update-node-dependencies
 description: Update the Node.js dependencies (npm, pnpm or yarn) of the current project, from security fixes to user-decided major upgrades. Use also for fixing `audit` findings or working through Renovate/Dependabot backlogs.
+license: Apache-2.0
 argument-hint: optional package directory, e.g. "frontend/"
 ---
 
@@ -49,7 +50,7 @@ Do not start updating before the answer.
 
 For every row, in order:
 
-1. **Changelog.** Read the changelog/GitHub releases for **every version between current and target** (`gh release view`, `gh api repos/<o>/<r>/releases`, `CHANGELOG.md` in the package or repo, or the web-fetch agent). Note breaking changes, deprecations, new defaults and new lint rules that affect this project. Grep the code for the APIs involved. "Minor" does not mean safe — 0.x minors and large minor jumps can break.
+1. **Changelog.** Read the changelog/GitHub releases for **every version between current and target** (`gh release view`, `gh api repos/<o>/<r>/releases`, `CHANGELOG.md` in the package or repo, or fetch the release notes from the web). Note breaking changes, deprecations, new defaults and new lint rules that affect this project. Grep the code for the APIs involved. "Minor" does not mean safe — 0.x minors and large minor jumps can break.
 2. **Update** to the target, keeping the existing range style (`^`/`~`/exact).
 3. **Adapt** code and config to what the changelog requires. Replace deprecated APIs/settings in the same commit. If a new lint rule fires, fix the code — don't suppress it or grow a ratchet.
 4. **Verify**: the project's fast check, build, unit tests always; e2e for updates that affect the runtime (UI framework, router, component library, styling, i18n). Batch e2e runs over several runtime commits only if the user agrees; bisect if something fails.
