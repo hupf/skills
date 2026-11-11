@@ -1,4 +1,6 @@
-# Claude Code skills
+# Agent skills
+
+Skills in the [Agent Skills](https://agentskills.io) format (`skills/<name>/SKILL.md`). They work with Claude Code and other agents that support the format.
 
 ## Skills
 
@@ -6,12 +8,17 @@
 
 ## Install
 
+With the [`skills`](https://skills.sh) CLI, which asks which skills and which agent:
+
 ```
-/plugin marketplace add hupf/skills
-/plugin install node-deps@hupf-skills
+npx skills add hupf/skills
 ```
 
-Run it with `/node-deps:update-node-dependencies [package dir]`, or ask Claude to update the dependencies.
+Or copy a skill folder by hand, e.g. for Claude Code into `~/.claude/skills/` (all projects) or `.claude/skills/` (one project).
+
+## Use
+
+Ask your agent to update the dependencies, or in Claude Code run `/update-node-dependencies [package dir]`.
 
 ## License
 
