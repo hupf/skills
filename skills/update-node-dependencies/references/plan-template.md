@@ -24,8 +24,9 @@ Today `<pm> audit` reports **N findings: a critical, b high, c moderate, d low**
 1. Read the changelog for every version between current and target; grep our code for affected APIs.
 2. `<pm> up <pkgs>@<target>`.
 3. Adapt code/config.
-4. Verify: always `<check>`, `<build>`, `<unit tests>`; for runtime updates (<list>) also e2e.
-5. Commit; record `audit` counts below.
+4. Update docs if affected (<docs locations>).
+5. Verify: always `<check>`, `<build>`, `<unit tests>`; for runtime updates (<list>) also e2e.
+6. Commit; record `audit` counts below.
 
 ## Phase 1: security (critical/high first)
 

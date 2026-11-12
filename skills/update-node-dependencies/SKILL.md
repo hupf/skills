@@ -53,9 +53,10 @@ For every row, in order:
 1. **Changelog.** Read the changelog/GitHub releases for **every version between current and target** (`gh release view`, `gh api repos/<o>/<r>/releases`, `CHANGELOG.md` in the package or repo, or fetch the release notes from the web). Note breaking changes, deprecations, new defaults and new lint rules that affect this project. Grep the code for the APIs involved. "Minor" does not mean safe — 0.x minors and large minor jumps can break.
 2. **Update** to the target, keeping the existing range style (`^`/`~`/exact).
 3. **Adapt** code and config to what the changelog requires. Replace deprecated APIs/settings in the same commit. If a new lint rule fires, fix the code — don't suppress it or grow a ratchet.
-4. **Verify**: the project's fast check, build, unit tests always; e2e for updates that affect the runtime (UI framework, router, component library, styling, i18n). Batch e2e runs over several runtime commits only if the user agrees; bisect if something fails.
-5. **Commit** with the project convention. Subject like `Update vite to 7.3.7 #210`; the body names the changelog points that matter for this project and any code changes. Never start a message line with `#`.
-6. **Record** in the plan's Progress table: versions, audit counts after the commit. Record decisions (and why) in the Decided section.
+4. **Docs.** Check whether the project documentation needs updating (README, contributing/setup docs, `CLAUDE.md`/`AGENTS.md`, ADRs, docs folder): changed commands, CLI flags, config options, required Node/tool versions, setup steps, or documented APIs. Update it in the same commit.
+5. **Verify**: the project's fast check, build, unit tests always; e2e for updates that affect the runtime (UI framework, router, component library, styling, i18n). Batch e2e runs over several runtime commits only if the user agrees; bisect if something fails.
+6. **Commit** with the project convention. Subject like `Update vite to 7.3.7 #210`; the body names the changelog points that matter for this project and any code and documentation changes. Never start a message line with `#`.
+7. **Record** in the plan's Progress table: versions, audit counts after the commit. Record decisions (and why) in the Decided section.
 
 Baseline: run the full test suite once before the first update and record the result (including failures unrelated to the updates), then again after each phase and compare.
 
