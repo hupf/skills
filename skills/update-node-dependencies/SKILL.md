@@ -41,6 +41,7 @@ Write the plan (see `references/plan-template.md`) to the project's plan locatio
 - Phase 3: each risky update with its expected effort/risk (to be verified against the changelog before the user decides).
 
 Then **ask the user**:
+
 - Should the plan file be committed (on the branch, deleted before merge) or stay untracked?
 - Which phases/rows to do now, and how to split them (one MR/PR for everything, one per phase, risky ones separately)?
 
@@ -48,9 +49,16 @@ Do not start updating before the answer.
 
 ## 4. Per-update procedure
 
+For every phase:
+
+- **Baseline.** run the full test suite once before the first update and record the result (including failures unrelated to the updates), then again after each phase and compare.
+- **Phase report.** After each phase, before moving on, give the user a list with one entry per commit of that phase (short hash and subject, write the same list into the plan's phase section):
+  - **Code changes**: "none" if the commit only touched `package.json`/lockfile. Otherwise a summary of the changes beyond the version bump that were needed (code, config, docs) and why (the breaking change behind it).
+  - **How to test**: for commits with code or runtime changes, what to check manually and where (the page, feature, command or config affected), plus the automated tests that cover it. For commits without code changes, say whether a quick look is still worthwhile (e.g. runtime dependency) or the automated checks suffice (e.g. dev tooling).
+
 For every row, in order:
 
-1. **Changelog.** Read the changelog/GitHub releases for **every version between current and target** (`gh release view`, `gh api repos/<o>/<r>/releases`, `CHANGELOG.md` in the package or repo, or fetch the release notes from the web). Note breaking changes, deprecations, new defaults and new lint rules that affect this project. Grep the code for the APIs involved. "Minor" does not mean safe — 0.x minors and large minor jumps can break.
+1. **Changelog.** Read the changelog/GitHub releases for **every version between current and target** (`gh release view`, `gh api repos/<o>/<r>/releases`, `CHANGELOG.md` in the package or repo, or fetch the release notes from the web). Note breaking changes, deprecations, new defaults and new lint rules that affect this project. Grep the code for the APIs involved. "Minor" does not mean safe.
 2. **Update** to the target, keeping the existing range style (`^`/`~`/exact).
 3. **Adapt** code and config to what the changelog requires. Replace deprecated APIs/settings in the same commit. If a new lint rule fires, fix the code — don't suppress it or grow a ratchet.
 4. **Docs.** Check whether the project documentation needs updating (README, contributing/setup docs, `CLAUDE.md`/`AGENTS.md`, ADRs, docs folder): changed commands, CLI flags, config options, required Node/tool versions, setup steps, or documented APIs. Update it in the same commit.
@@ -58,13 +66,11 @@ For every row, in order:
 6. **Commit** with the project convention. Subject like `Update vite to 7.3.7 #210`; the body names the changelog points that matter for this project and any code and documentation changes. Never start a message line with `#`.
 7. **Record** in the plan's Progress table: versions, audit counts after the commit. Record decisions (and why) in the Decided section.
 
-Baseline: run the full test suite once before the first update and record the result (including failures unrelated to the updates), then again after each phase and compare.
-
 If an update turns out riskier than planned, stop, move it to phase 3 with what you learned, and tell the user.
 
 ## 5. Phase 3
 
-Before the user decides, verify each item against its changelog and write into the plan: effort, benefit, affected files, dependencies on other items (e.g. "vitest 5 needs vite 8"). Do only what the user accepts; record declined ones with the reason.
+Before the user decides, verify each item against its changelog and write into the plan: effort, benefit, affected files, dependencies on other items (e.g. "vitest 5 needs vite 8"). Do only what the user accepts; record declined ones with the reason. Give the phase report (see 4) for the accepted ones too.
 
 ## 6. Remaining findings
 
@@ -83,13 +89,13 @@ Record the decision and its reason in Decided.
 
 ## Commands
 
-| | pnpm | npm | yarn (Berry) | yarn classic |
-|---|---|---|---|---|
-| audit | `pnpm audit --json` | `npm audit --json` | `yarn npm audit --all --recursive --json` | `yarn audit --json` |
-| outdated | `pnpm outdated` | `npm outdated` | `yarn upgrade-interactive` (or `yarn outdated` via plugin) | `yarn outdated` |
-| update to target | `pnpm up <pkg>@<v>` | `npm install <pkg>@<v>` | `yarn up <pkg>@<v>` | `yarn upgrade <pkg>@<v>` |
-| refresh transitive | `pnpm update --depth Infinity <pkg>` | `npm update <pkg>` | `yarn up -R <pkg>` | `yarn upgrade <pkg>` |
-| why | `pnpm why <pkg>` | `npm explain <pkg>` | `yarn why <pkg>` | `yarn why <pkg>` |
-| override (only if the user decides so) | `pnpm.overrides` | `overrides` | `resolutions` | `resolutions` |
+|                                        | pnpm                                 | npm                     | yarn (Berry)                                               | yarn classic             |
+| -------------------------------------- | ------------------------------------ | ----------------------- | ---------------------------------------------------------- | ------------------------ |
+| audit                                  | `pnpm audit --json`                  | `npm audit --json`      | `yarn npm audit --all --recursive --json`                  | `yarn audit --json`      |
+| outdated                               | `pnpm outdated`                      | `npm outdated`          | `yarn upgrade-interactive` (or `yarn outdated` via plugin) | `yarn outdated`          |
+| update to target                       | `pnpm up <pkg>@<v>`                  | `npm install <pkg>@<v>` | `yarn up <pkg>@<v>`                                        | `yarn upgrade <pkg>@<v>` |
+| refresh transitive                     | `pnpm update --depth Infinity <pkg>` | `npm update <pkg>`      | `yarn up -R <pkg>`                                         | `yarn upgrade <pkg>`     |
+| why                                    | `pnpm why <pkg>`                     | `npm explain <pkg>`     | `yarn why <pkg>`                                           | `yarn why <pkg>`         |
+| override (only if the user decides so) | `pnpm.overrides`                     | `overrides`             | `resolutions`                                              | `resolutions`            |
 
 Check the installed version's help (`<pm> <cmd> --help`) when a flag doesn't behave as expected.

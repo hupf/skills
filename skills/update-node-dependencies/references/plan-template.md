@@ -30,35 +30,40 @@ Today `<pm> audit` reports **N findings: a critical, b high, c moderate, d low**
 
 ## Phase 1: security (critical/high first)
 
-| # | Commit | From → To | Fixes |
-|---|---|---|---|
-| 1 | vitest (+ @vitest/*) | 4.0.18 → 4.1.12 | **critical** vitest; @vitest/mocker moderate |
-| 2 | vite | 7.3.1 → 7.3.7 | 8 vite advisories; rollup, postcss, transitive |
-| … | | | |
-| n | Remaining transitive findings | — | lockfile refresh; if the parent's range blocks the fix → remaining findings, not overrides |
+| #   | Commit                        | From → To       | Fixes                                                                                      |
+| --- | ----------------------------- | --------------- | ------------------------------------------------------------------------------------------ |
+| 1   | vitest (+ @vitest/*)          | 4.0.18 → 4.1.12 | **critical** vitest; @vitest/mocker moderate                                               |
+| 2   | vite                          | 7.3.1 → 7.3.7   | 8 vite advisories; rollup, postcss, transitive                                             |
+| …   |                               |                 |                                                                                            |
+| n   | Remaining transitive findings | —               | lockfile refresh; if the parent's range blocks the fix → remaining findings, not overrides |
 
 After phase 1: full tests and audit. Target: 0 critical, 0 high.
 
+Phase report (filled in when the phase is done, one entry per commit):
+
+- `a1b2c3d` Update vitest to 4.1.12 — code changes: none. Test: automated tests suffice (dev tooling).
+- `<hash>` Update <pkg> to <version> — code changes: <summary of the changes, what and why>. Test: <what to check manually and where>; covered by <tests>.
+
 ## Phase 2: other safe minor and patch updates
 
-| # | Commit | From → To | Note |
-|---|---|---|---|
-| 9 | react, react-dom, @types/react, @types/react-dom | 19.2 → 19.3 | read the release notes (minor, but it is React) |
-| 10 | lucide-react | 0.562 → 0.577 | 0.x minors can remove icons; tsc catches that |
-| … | | | |
+| #   | Commit                                           | From → To     | Note                                            |
+| --- | ------------------------------------------------ | ------------- | ----------------------------------------------- |
+| 9   | react, react-dom, @types/react, @types/react-dom | 19.2 → 19.3   | read the release notes (minor, but it is React) |
+| 10  | lucide-react                                     | 0.562 → 0.577 | 0.x minors can remove icons; tsc catches that   |
+| …   |                                                  |               |                                                 |
 
-At the end, `<pm> outdated` lists only the majors below.
+At the end, `<pm> outdated` lists only the majors below. Phase report as in phase 1.
 
 ## Phase 3: decision list (risky updates, not done without your OK)
 
 Verified against the changelog before you decide; effort, benefit and affected files go here.
 
-| Update | Expected risk/effort |
-|---|---|
-| vite 7 → 8 + @vitejs/plugin-react 5 → 6 | Rolldown instead of Rollup; check plugins and config |
-| typescript 5.9 → 7 | native compiler; check `tsc -b`, typescript-eslint, editor tooling. High risk |
-| @types/node 24 → 26 | **don't**: follows the Node major |
-| … | |
+| Update                                  | Expected risk/effort                                                          |
+| --------------------------------------- | ----------------------------------------------------------------------------- |
+| vite 7 → 8 + @vitejs/plugin-react 5 → 6 | Rolldown instead of Rollup; check plugins and config                          |
+| typescript 5.9 → 7                      | native compiler; check `tsc -b`, typescript-eslint, editor tooling. High risk |
+| @types/node 24 → 26                     | **don't**: follows the Node major                                             |
+| …                                       |                                                                               |
 
 ## Files
 
@@ -77,15 +82,16 @@ Verified against the changelog before you decide; effort, benefit and affected f
 
 Audit counts (critical / high / moderate / low) after each step.
 
-| Step | Versions | Audit |
-|---|---|---|
-| Baseline | — | 3 / 45 / 26 / 2 |
-| 1 vitest | 4.1.12 | 2 / 44 / 22 / 2 |
-| … | | |
+| Step     | Versions | Audit           |
+| -------- | -------- | --------------- |
+| Baseline | —        | 3 / 45 / 26 / 2 |
+| 1 vitest | 4.1.12   | 2 / 44 / 22 / 2 |
+| …        |          |                 |
 
 ## Decided
 
 Dated entries, with the reason. E.g.:
+
 - Target versions are the newest ones older than 7 days on <date>.
 - Baseline test run is red for reasons unrelated to this work: <what>. Compared against the run after phase 1.
 - Deprecated APIs flagged by changelogs are replaced in the commit that updates the package.
